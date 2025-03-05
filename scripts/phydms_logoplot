@@ -97,9 +97,9 @@ def main():
         assert set(sites) == set(map(str, omegas['site'].values)),\
                ("sites in {0} don't match those in prefs or diffprefs"
                .format(args['omegabysite']))
-        shortname = '$\omega_r$'
-        longname = ('{0} $<1 \; \longleftarrow$ $\log_{{10}} P$ '
-                    '$\longrightarrow \;$ {0} $>1$'.format(shortname))
+        shortname = r'$\omega_r$'
+        longname = (r'{0} $<1 \; \longleftarrow$ $\log_{{10}} P$ '
+                    r'$\longrightarrow \;$ {0} $>1$'.format(shortname))
         prop_d = {}
         for r in sites:
             omegar = float(omegas[omegas['site'].astype(str) == r]['omega'])
