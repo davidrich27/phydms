@@ -1,9 +1,15 @@
 Changelog
 ===========
 
+2.4.2
+-----
+* `scipy` 1.15.0 has deprecated and removed `derivative` function with no direct replacement. For now, function has been imported into the project under `phydmslib/scipy_derivative.py`.
+
 2.4.1
 -----
 * Unpin `biopython` now that `pyvolve` is updated.
+
+* `scipy`  `derivative` function. There are alternatives
 
 2.4.0
 ------
