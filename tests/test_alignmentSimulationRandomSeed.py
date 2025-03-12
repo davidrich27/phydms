@@ -43,7 +43,6 @@ class test_simulateRandomSeed_ExpCM(unittest.TestCase):
         omega = 0.4
         beta = 1.5
         mu = 0.3
-        print(f'MODEL: {self.MODEL}')
         if self.MODEL == phydmslib.models.ExpCM:
             phi = numpy.random.dirichlet([7] * N_NT)
             model = phydmslib.models.ExpCM(prefs, kappa=kappa, omega=omega,
@@ -76,7 +75,6 @@ class test_simulateRandomSeed_ExpCM(unittest.TestCase):
         # alignments with the same seed number should be the same
         # make two alignments with the same seed number
         for counter in range(2):
-            print(f'counter: {counter}, rand: {random.randint(0,100)}, {numpy.random.randint(0,100)}')
             alignmentPrefix = "test_counter{0}_seed{1}".format(counter, seed)
             phydmslib.simulate.simulateAlignment(model, temptree,
                                                  alignmentPrefix, seed)
@@ -85,12 +83,6 @@ class test_simulateRandomSeed_ExpCM(unittest.TestCase):
                                      "fasta"):
                 alignments[counter][s.id] = str(s.seq)
         # check they are the same
-        print(f'SAME ALIGNMENTS:')
-        for key in alignments[counter].keys():
-            print(f'key: {key}')
-            print(f'\t{counter}: {alignments[counter][key][0:10]}')
-            print(f'\t{counter-1}: {alignments[counter-1][key][0:10]}')
-
         for key in alignments[counter].keys():
             self.assertTrue(alignments[counter][key] ==
                             alignments[counter - 1][key])
@@ -106,12 +98,6 @@ class test_simulateRandomSeed_ExpCM(unittest.TestCase):
                                  "fasta".format(counter, seed), "fasta"):
             alignments[counter][s.id] = str(s.seq)
         # check they are different
-        print(f'DIFF ALIGNMENTS:\n{alignments}')
-        for key in alignments[counter].keys():
-            print(f'key: {key}')
-            print(f'\t{alignments[counter][key][0:10]}')
-            print(f'\t{alignments[counter-1][key][0:10]}')
-
         for key in alignments[counter].keys():
             self.assertFalse(alignments[counter][key] ==
                              alignments[counter - 1][key])

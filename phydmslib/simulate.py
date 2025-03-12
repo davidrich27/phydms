@@ -123,9 +123,7 @@ def simulateAlignment(model, treeFile, alignmentPrefix, randomSeed=False):
     if randomSeed is False:
         pass
     else:
-        print('setting sim_seed')
         random.seed(randomSeed)
-    print(f'sim_seed: {randomSeed}')
 
     # Transform the branch lengths by dividing by the model `branchScale`
     tree = Bio.Phylo.read(treeFile, 'newick')
@@ -149,7 +147,6 @@ def simulateAlignment(model, treeFile, alignmentPrefix, randomSeed=False):
     rates = '_temp_{0}_ratefile.txt'.format(alignmentPrefix)
     evolver = pyvolve.Evolver(partitions=partitions, tree=pyvolve_tree)
     evolver(seqfile=alignment, infofile=info, ratefile=rates, seed=random.getrandbits(64))
-    print(f'Evolver:\n{evolver.get_sequences()}')
     for f in [rates, info, "custom_matrix_frequencies.txt"]:
         if os.path.isfile(f):
             os.remove(f)
