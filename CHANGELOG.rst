@@ -9,8 +9,6 @@ Changelog
 -----
 * Unpin `biopython` now that `pyvolve` is updated.
 
-* `scipy`  `derivative` function. There are alternatives
-
 2.4.0
 ------
 * Stop using matplotlib LaTex fonts in logo plots.

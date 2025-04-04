@@ -63,7 +63,7 @@ def extensions():
             Extension('phydmslib.numutils', ['phydmslib/numutils.pyx'],
                     include_dirs=[numpy.get_include()],
                     extra_compile_args=['-Wno-unused-function']),
-          ]      
+          ]
     return cythonize(ext)
 
 # main setup command
@@ -83,19 +83,19 @@ setup(
         'numpy>=1.11',
         ],
     install_requires = [
-        'biopython>=1.67',
-        'cython>=0.28',
-        'numpy>=1.16.5',
-        'scipy>=0.18',
-        'matplotlib>=2.0.2',
-        'natsort>=5.0.1',
-        'sympy>=1.0',
-        'six>=1.10',
-        'pandas>=0.20.2',
-        'pyvolve>=1.0.3',
-        'statsmodels>=0.8',
+        'biopython',
+        'cython',
+        'numpy',
+        'scipy',
+        'matplotlib',
+        'natsort',
+        'sympy',
+        'six',
+        'pandas',
+        'pyvolve',
+        'statsmodels',
         'weblogo>=3.4, <3.6',
-        'PyPDF2>=1.26',
+        'PyPDF2',
         ],
     packages = ['phydmslib'],
     package_dir = {'phydmslib':'phydmslib'},
