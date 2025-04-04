@@ -70,20 +70,12 @@ class test_OmegaBySiteExpCM(unittest.TestCase):
         rates = simulateprefix + "_temp_ratefile.txt"
         evolver(seqfile=simulatedalignment, infofile=info, ratefile=rates)
 
-        with open(simulatedalignment, 'r') as file:
-            print(f'simulatedalignment: {simulatedalignment}')
-            for line in file.readlines():
-                print(f'{line}', end="")
-
         subprocess.check_call(["phydms", simulatedalignment, self.tree,
                                self.modelarg, simulateprefix, "--omegabysite",
                                "--brlen", "scale"])
         omegabysitefile = simulateprefix + "_omegabysite.txt"
         omegas = pandas.read_csv(omegabysitefile, sep="\t", comment="#")
         divpressureomegas = omegas[omegas["site"].isin(divpressuresites)]
-
-        print(f'divpressureomegas:\n{divpressureomegas}')
-        print(f'divpressuresites:\n{divpressuresites}')
 
         self.assertTrue(len(divpressureomegas) == len(divpressuresites))
         self.assertTrue(
