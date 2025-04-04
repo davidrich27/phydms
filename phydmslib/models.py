@@ -573,7 +573,6 @@ class ExpCM(Model):
                                                   broadcastGetCols(self.Ainv,
                                                                    tips))
                 if gaps is not None and gaps.size > 0:
-                    print(f"gaps: {gaps}, dtype: {gaps.dtype}, shape: {gaps.shape}")
                     M[gaps] = numpy.ones(N_CODON, dtype='float')
         #  if M.min() < -0.01:
         #    warnings.warn("Large negative value in M(t) being set to 0. "
