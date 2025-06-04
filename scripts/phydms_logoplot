@@ -75,7 +75,7 @@ def main():
             data[r] = {}
             sitediffprefs = diffprefs[diffprefs['site'].astype(str) == r]
             for a in aas:
-                data[r][a] = float(sitediffprefs['dpi_{0}'.format(a)])
+                data[r][a] = float(sitediffprefs['dpi_{0}'.format(a)].iloc[0])
             sumpos = sum([dpi for dpi in data[r].values() if dpi > 0])
             sumneg = sum([-dpi for dpi in data[r].values() if dpi < 0])
             if max(sumpos, sumneg) >= ydatamax:

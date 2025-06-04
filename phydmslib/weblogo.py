@@ -25,6 +25,9 @@ import corebio.matrix  # weblogo library
 import corebio.utils  # weblogo library
 from phydmslib.constants import AA_TO_INDEX, NT_TO_INDEX
 matplotlib.use('pdf')
+# TODO: set fonts
+matplotlib.rcParams['pdf.fonttype'] = 42  # Embed TrueType fonts
+matplotlib.rcParams['ps.fonttype'] = 42
 
 
 def KyteDoolittleColorMapping(maptype='jet', reverse=True):
@@ -641,6 +644,7 @@ def _my_pdf_formatter(data, pdfformat, ordered_alphabets):
     """
     eps = _my_eps_formatter(data, pdfformat, ordered_alphabets).decode()
     gs = weblogolib.GhostscriptAPI()
+    # TODO: change to /home/drich/miniforge3/envs/phydms-latest/lib/python3.13/site-packages/weblogolib/__init__.py:230
     return gs.convert('pdf', eps, pdfformat.logo_width, pdfformat.logo_height)
 
 
@@ -741,7 +745,7 @@ def _my_eps_formatter(logodata, format, ordered_alphabets):  # noqa: F401
                 s.append((s_d[aa], aa))
             else:
                 s.append((s_d[aa], ' '))
-#        s = [(s_d[aa], aa) for aa in ordered_alphabets[seq_index]]
+        # s = [(s_d[aa], aa) for aa in ordered_alphabets[seq_index]]
 
         # Sort by frequency. If equal frequency then reverse alphabetic
         # (So sort reverse alphabetic first, then frequencty)
@@ -751,6 +755,7 @@ def _my_eps_formatter(logodata, format, ordered_alphabets):  # noqa: F401
         # s.reverse()
         # s.sort(key= lambda x: x[0])
         # if not format.reverse_stacks: s.reverse()
+        print(f"{s=}")
 
         C = float(sum(logodata.counts[seq_index]))
         if C > 0.0:
