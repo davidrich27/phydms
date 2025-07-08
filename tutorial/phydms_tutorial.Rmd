@@ -56,6 +56,7 @@ p
 
 ```{r enrichment scores to preferences, engine="python", comment=NA}
 import pandas as pd
+
 df = pd.read_csv("example_data/betaLactamase_enrichmentScores.csv")
 minenrichment = 1.0e-4 # minimum allowed enrichment
 df["preference"] = [max(minenrichment, (10**df["Trial_1_AmpConc_2500"][x] + 10**df["Trial_2_AmpConc_2500.1"][x])/2) for x in range(len(df))]
@@ -63,7 +64,7 @@ df = df.pivot(index = "Site", columns = "AminoAcid", values = "preference")2df.f
 df = df.div(df.sum(axis=1), axis=0)
 df.insert(0, "site", range(1,len(df)+1))
 df.to_csv("example_data/betaLactamase_prefs.csv", index = False)
-print df.iloc[:,:9].head(6).to_string(index = False)
+print(df.iloc[:,:9].head(6).to_string(index = False))
 ```
 
 We can visualize the preferences as a logoplot using [phydms_logoplot](http://jbloomlab.github.io/phydms/phydms_logoplot.html):
@@ -215,13 +216,13 @@ import glob
 seqFileName = "example_data/HA_alignment.fasta"
 sequences = list(SeqIO.parse(open(seqFileName),'fasta'))
 assert len(set([len(x.seq) for x in sequences ])) == 1
-print "Sequences read from: %s"%seqFileName
-print "There are %s sequences"%len(sequences)
-print "Each sequence is %s amino acids long"%str(len(sequences[0].seq)/3)
-print
+print(f"Sequences read from: {seqFileName}")
+print(f"There are {len(sequences)} sequences")
+print(f"Each sequence is {str(len(sequences[0].seq)/3)} amino acids long")
+print()
 for prefFileName in glob.glob("example_data/HA_prefs_*"):
-  print "Preferences read from: %s"%prefFileName
-  print "There are preferences measured for %s sites"%len(pd.read_csv(prefFileName))
+  print(f"Preferences read from: {prefFileName}")
+  print(f"There are preferences measured for {len(pd.read_csv(prefFileName)} sites")
 ```
 
 You can use the [`phydms`](http://jbloomlab.github.io/phydms/phydms_prog.html) auxiliary program [`phydms_prepalignment`](http://jbloomlab.github.io/phydms/phydms_prepalignment.html) to filter your sequences and prepare an alignment for [`phydms_comprehensive`](http://jbloomlab.github.io/phydms/phydms_comprehensive_prog.html).
@@ -287,13 +288,13 @@ for protein in proteins.keys():
   prefFileName = proteins[protein][1]
   sequences = list(SeqIO.parse(open(seqFileName),'fasta'))
   assert len(set([len(x.seq) for x in sequences ])) == 1
-  print protein
-  print "Sequences read from: %s"%seqFileName
-  print "There are %s sequences"%len(sequences)
-  print "Each sequence is %s amino acids long"%str(len(sequences[0].seq)/3)
-  print "Preferences read from: %s"%prefFileName
-  print "There are preferences measured for %s sites"%len(pd.read_csv(prefFileName))
-  print
+  print(protein)
+  print(f"Sequences read from: {seqFileName}")
+  print(f"There are {len(sequences)} sequences")
+  print(f"Each sequence is {len(sequences[0].seq)/3} amino acids long")
+  print(f"Preferences read from: {prefFileName}")
+  print(f"There are preferences measured for {len(pd.read_csv(prefFileName))} sites")
+  print()
 ```
 
 ###`phydms_comprehensive`{#phydms_comprehensiveCommandAll}
@@ -361,13 +362,13 @@ for protein in proteins.keys():
   prefFileName = proteins[protein][1]
   sequences = list(SeqIO.parse(open(seqFileName),'fasta'))
   assert len(set([len(x.seq) for x in sequences ])) == 1
-  print protein
-  print "Sequences read from: %s"%seqFileName
-  print "There are %s sequences"%len(sequences)
-  print "Each sequence is %s amino acids long"%str(len(sequences[0].seq)/3)
-  print "Preferences read from: %s"%prefFileName
-  print "There are preferences measured for %s sites"%len(pd.read_csv(prefFileName))
-  print
+  print(protein)
+  print(f"Sequences read from: {seqFileName}")
+  print(f"There are {len(sequences)} sequences")
+  print(f"Each sequence is {len(sequences[0].seq)/3} amino acids long")
+  print(f"Preferences read from: {prefFileName}")
+  print(f"There are preferences measured for {len(pd.read_csv(prefFileName))} sites")
+  print()
 ```
 
 ###`phydms_comprehensive`{#phydms_comprehensiveCommanddiff}
@@ -393,21 +394,21 @@ Here are the sites (and a subset of the differential preferences) in HA with the
 ```{r phydms_comprehensive HA diff head, engine='python', comment=NA, error=TRUE}
 import pandas as pd
 df = pd.read_csv("HA_diffprefs/ExpCM_HA_prefs_Doud_diffprefsbysite.txt", sep='\t', skiprows=(0,1,2))
-print df.iloc[:,range(9) + [-1]].head(6).to_string(index = False)
+print(df.iloc[:,range(9) + [-1]].head(6).to_string(index = False))
 ```
 
 and sites with the weakest evidence
 ```{r phydms_comprehensive HA diff tail, engine='python', comment=NA, error=TRUE}
 import pandas as pd
 df = pd.read_csv("HA_diffprefs/ExpCM_HA_prefs_Doud_diffprefsbysite.txt", sep='\t', skiprows=(0,1,2))
-print df.iloc[:,range(9) + [-1]].tail(6).to_string(index = False)
+print(df.iloc[:,range(9) + [-1]].tail(6).to_string(index = False))
 ```
 
 Here are the sites in $\beta$-lactamase with the strongest evidence for differential selection
 ```{r phydms_comprehensive beta diff head, engine='python', comment=NA, error=TRUE}
 import pandas as pd
 df = pd.read_csv("betaLactamase_diffprefs/ExpCM_betaLactamase_prefs_diffprefsbysite.txt", sep='\t', skiprows=(0,1,2))
-print df.iloc[:,range(9) + [-1]].head(6).to_string(index = False)
+print(df.iloc[:,range(9) + [-1]].head(6).to_string(index = False))
 ```
 
 We visualize the $\beta$-lactamase differential preferences for each site using [`phydms_logoplot`](http://jbloomlab.github.io/phydms/phydms_logoplot.html)
