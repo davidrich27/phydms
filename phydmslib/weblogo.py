@@ -18,7 +18,6 @@ import numpy
 import matplotlib
 import pylab
 import PyPDF2
-import subprocess
 # the following are part of the weblogo library
 import weblogolib  # weblogo library
 import weblogolib.colorscheme  # weblogo library
@@ -475,7 +474,7 @@ def LogoPlot(sites, datatype, data, plotfile, nperline,
 
         # create web logo
         charstring = ''.join(chars_for_string)
-        assert len(charstring) == len(chars_for_string),\
+        assert len(charstring) == len(chars_for_string), \
             ("Length of charstring doesn't match length of "
              "chars_for_string. Do you have unallowable multi-letter "
              "characters?\n%s"
@@ -642,68 +641,7 @@ def _my_pdf_formatter(data, pdfformat, ordered_alphabets):
     """
     eps = _my_eps_formatter(data, pdfformat, ordered_alphabets).decode()
     gs = weblogolib.GhostscriptAPI()
-    # TODO: change made to /home/drich/miniforge3/envs/phydms-latest/lib/python3.13/site-packages/weblogolib/__init__.py:230
     return gs.convert('pdf', eps, pdfformat.logo_width, pdfformat.logo_height)
-
-
-# TODO: verifying fonts exist
-def _check_ghostscript_fonts(substitutions_dict, font_default="nimbussans"):
-    """Checks before formatting EPS template that requested fonts are available to GhostScript."""
-
-    def _get_available_ghostscript_fonts():
-        cmd = "gs -q -dNODISPLAY -dBATCH -c '(*) {cvn ==} 256 string /Font resourceforall'"
-        result = subprocess.run(
-            cmd,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        if result.returncode != 0:
-            raise RuntimeError(f"[ERROR] Ghostscript font search failed: {result.stderr}")
-        return [line.strip().lstrip('/').lower() for line in result.stdout.splitlines()]
-    available_ghostscript_fonts = _get_available_ghostscript_fonts()
-    # print(f"{available_ghostscript_fonts=}")
-
-    def _font_available(font_requested, available_fonts=available_ghostscript_fonts):
-        font_requested_lower = font_requested.lower()
-        if (font_requested_lower in available_fonts):
-            return True
-        return False
-
-    def _match_style(font_requested, font_default):
-        style_suffixes = {
-            "bolditalic": ["bolditalic", "italicbold", "boldoblique", "obliquebold"],
-            "bold": ["bold"],
-            "italic": ["italic", "oblique"]
-        }
-
-        font_default_lower = font_default.lower()
-        font_requested_lower = font_requested.lower()
-        for suffix, keywords in style_suffixes.items():
-            if any(k in font_requested_lower for k in keywords):
-                font_styled = f"{font_default_lower}-{suffix}"
-                if _font_available(font_styled):
-                    return font_styled
-        if _font_available(font_default_lower):
-            return font_default_lower
-        font_default_lower = f"{font_default_lower}-regular"
-        if _font_available(font_default_lower):
-            return font_default_lower
-        raise Exception(f"[ERROR] base font `{font_default}` not found on system.")
-
-    font_keys = [key for key in substitutions_dict.keys() if key.endswith("_font")]
-    # print(f"{font_keys=}")
-    for key in font_keys:
-        font_requested = substitutions_dict[key]
-        # if _font_available(font_requested):
-        #     print(f"[SUCCESS] font `{font_requested}` found on system.")
-        if not _font_available(font_requested):
-            font_fallback = _match_style(font_requested, font_default)
-            print(f"[WARN] font `{font_requested}` not found on system. Falling back to font `{font_fallback}`.")
-            # substitutions_dict[key] = font_fallback
-
-    return substitutions_dict
 
 
 def _my_eps_formatter(logodata, format, ordered_alphabets):  # noqa: F401
@@ -740,8 +678,6 @@ def _my_eps_formatter(logodata, format, ordered_alphabets):  # noqa: F401
 
     for s in from_format:
         substitutions[s] = getattr(format, s)
-    substitutions = _check_ghostscript_fonts(substitutions_dict=substitutions)
-    # print(f"{substitutions=}")
 
     substitutions["shrink"] = str(format.show_boxes).lower()
 
@@ -953,8 +889,8 @@ class _my_Motif(corebio.matrix.AlphabeticArray):
         hcols = len(header)
         rows = len(items)
         cols = len(items[0])
-        if not(header[0] == 'PO' or header[0] == 'P0' or
-               hcols == cols-1 or hcols == cols-2):
+        if not (header[0] == 'PO' or header[0] == 'P0' or
+                hcols == cols-1 or hcols == cols-2):
             raise ValueError("Missing header line!")
 
         # Do all lines (except the first) contain the same number of items?
@@ -1119,8 +1055,8 @@ def LogoOverlay(sites, overlayfile, overlay, nperline, sitewidth, rmargin,
     for (prop_d, shortname, longname) in overlay:
         if shortname == longname == 'wildtype':
             assert all(((isinstance(prop, str) and len(prop) == 1) for
-                        prop in prop_d.values())),\
-                        'prop_d does not give letters'
+                        prop in prop_d.values())), \
+                'prop_d does not give letters'
             proptype = 'wildtype'
             (vmin, vmax) = (0, 1)  # not used, but need to be assigned
             propcategories = None  # not used, but needs to be assigned
